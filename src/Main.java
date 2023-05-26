@@ -17,6 +17,7 @@ public class Main {
             System.out.println("================== 건강 관리 기록 시스템 ==================");
             System.out.println("환영합니다. 원하는 번호를 입력하세요.");
             System.out.println("1. 회원가입    2. 로그인    3. 종료");
+            System.out.println("======================================================");
             scanner = new Scanner(System.in);
 
             try {
@@ -30,11 +31,10 @@ public class Main {
 
             switch (input_num) {
                 case 1: // 회원가입
-                    MyUser newUser = new MyUser();
-                    newUser.insert();
+                    myUser = new MyUser();
+                    myUser.insert();
                     break;
                 case 2: // 로그인
-                    System.out.println("======================================================\n");
                     System.out.print("- 닉네임: ");
                     scanner = new Scanner(System.in);
                     String nick = scanner.next();
@@ -63,9 +63,23 @@ public class Main {
                 input_num = scanner.nextInt();
                 if (input_num < 4 || input_num > 7) {
                     throw new InputMismatchException();
-                } else break;
+                }
             }   catch (InputMismatchException e) {
                 System.out.println("4~7 중에서 선택하세요.");
+            }
+
+            Hospital hospital;
+            switch (input_num) {
+                case 4: // 병원 등록
+                    hospital = new Hospital();
+                    hospital.insert();
+                    break;
+                case 5: // 병원 진료 기록
+                    break;
+                case 6: // 오늘의 컨디션
+                    break;
+                case 7: // 건강기록 모아보기
+                    break;
             }
         }
 

@@ -75,7 +75,6 @@ public class MyUser implements DB_func{
     }
 
     public MyUser()  {
-        System.out.println("======================================================\n");
         System.out.print("- 닉네임 (15자 이내) : ");
         setNickname(sc.next());
         System.out.print("- 이름 (50자 이내) : ");

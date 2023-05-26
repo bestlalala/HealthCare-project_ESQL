@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class MyUser implements DB_func{
     ResultSet resultSet = null;     // 출력할 결과
+    long id;
     String nickname;
     String username;
     String regist_num;
@@ -126,6 +127,8 @@ public class MyUser implements DB_func{
         try {
             Main.stmt.execute(sql);
             System.out.println("회원가입 성공!");
+            resultSet = Main.stmt.executeQuery("SELECT U# FROM MyUser WHERE nickname = '" + nickname + "';");
+            id = resultSet.getInt(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }

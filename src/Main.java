@@ -6,7 +6,8 @@ public class Main {
     public static Connection con = null;
     public static Statement stmt;
     public static MyUser myUser;
-    public static void main(String[] args) {
+    public static Hospital hospital;
+    public static void main(String[] args) throws SQLException {
         makeConnection();
         int input_num = 0;
         Scanner scanner = new Scanner(System.in);
@@ -68,13 +69,14 @@ public class Main {
                 System.out.println("4~7 중에서 선택하세요.");
             }
 
-            Hospital hospital;
+
             switch (input_num) {
                 case 4: // 병원 등록
                     hospital = new Hospital();
                     hospital.insert();
                     break;
                 case 5: // 병원 진료 기록
+                    Hospital_record hospital_record = new Hospital_record();
                     break;
                 case 6: // 오늘의 컨디션
                     break;
@@ -82,13 +84,9 @@ public class Main {
                     break;
                 case 8: // 회원 정보 수정
                     myUser.update(myUser.nickname);
-
                     break;
             }
         }
-
-
-
 
     }
 

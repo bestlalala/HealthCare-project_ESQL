@@ -7,10 +7,11 @@ public class Hospital implements DB_func{
     String subject;
     String location;
     Scanner sc = new Scanner(System.in);
-    ResultSet resultSet = null;     // 출력할 결과
+    public static ResultSet resultSet = null;     // 출력할 결과
 
-    public Hospital() {
+    public Hospital() throws SQLException {
         System.out.println("===================== [ 병원 등록 ] ======================\n");
+        select();
         System.out.print("- 병원 이름 (50자 이내) : ");
         setName(sc.next());
         System.out.print("- 병원 종류 (20자 이내, ex. general) : ");
@@ -34,11 +35,13 @@ public class Hospital implements DB_func{
 
     @Override   // 전체 병원 조회
     public void select() throws SQLException {
+        System.out.println("<병원 목록>");
+        System.out.println("<id> | <병원명> | <병원종류> | <지역>");
         resultSet = Main.stmt.executeQuery("SELECT * FROM Hospital;");
 
         while(resultSet.next()) {
-            System.out.println(resultSet.getInt(1) + "\t" + resultSet.getString(2)
-                    + "\t" + resultSet.getString(3)+ "\t" + resultSet.getString(4));
+            System.out.println(resultSet.getInt(1) + "\t|" + resultSet.getString(2)
+                    + "\t|" + resultSet.getString(3)+ "\t|" + resultSet.getString(4));
         }
     }
 

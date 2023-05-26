@@ -132,17 +132,20 @@ public class MyUser implements DB_func{
     }
 
     @Override
-    public void update() {
+    public void update(String id) {
         System.out.println("======================================================\n");
-        System.out.print("- 닉네임 : ");
-        setNickname(sc.next());
-        System.out.print("- 이름 : ");
+        System.out.print("- 이름: ");
         setUsername(sc.next());
-        System.out.print("- 주민번호 앞 6자리와 뒤 1자리 (ex. 0106274)");
-        setRegist_num(sc.next());
-        System.out.print("- 성별: ");
-        setGender(sc.next());
         System.out.println("======================================================\n");
+
+        String sql = "UPDATE MyUser SET username = '" + this.username + "' WHERE nickname = '" + this.nickname +"';";
+
+        try {
+            Main.stmt.executeUpdate(sql);
+            System.out.println("수정 완료");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

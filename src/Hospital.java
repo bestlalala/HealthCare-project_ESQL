@@ -55,7 +55,7 @@ public class Hospital implements DB_func{
     }
 
     @Override
-    public void update() throws SQLException {
+    public void update(String id) {
     }
 
     @Override

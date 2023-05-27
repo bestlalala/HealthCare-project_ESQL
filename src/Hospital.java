@@ -9,16 +9,7 @@ public class Hospital implements DB_func{
     Scanner sc = new Scanner(System.in);
     public static ResultSet resultSet = null;     // 출력할 결과
 
-    public Hospital() throws SQLException {
-        System.out.println("===================== [ 병원 등록 ] ======================\n");
-        select();
-        System.out.print("- 병원 이름 (50자 이내) : ");
-        setName(sc.next());
-        System.out.print("- 병원 종류 (20자 이내, ex. general) : ");
-        setSubject(sc.next());
-        System.out.print("- 지역 : ");
-        setLocation(sc.next());
-        System.out.println("======================================================\n");
+    public Hospital() {
     }
 
     public void setName(String name) {
@@ -35,8 +26,8 @@ public class Hospital implements DB_func{
 
     @Override   // 전체 병원 조회
     public void select() throws SQLException {
-        System.out.println("<병원 목록>");
-        System.out.println("<id> | <병원명> | <병원종류> | <지역>");
+        System.out.println("[병원 목록]");
+        System.out.println("<id>  |   <병원명>   |   <병원종류>   |   <지역>");
         resultSet = Main.stmt.executeQuery("SELECT * FROM Hospital;");
 
         while(resultSet.next()) {
@@ -47,6 +38,15 @@ public class Hospital implements DB_func{
 
     @Override
     public void insert() {
+        System.out.println("===================== [ 병원 등록 ] ======================\n");
+        System.out.print("- 병원 이름 (50자 이내) : ");
+        setName(sc.next());
+        System.out.print("- 병원 종류 (20자 이내, ex. general) : ");
+        setSubject(sc.next());
+        System.out.print("- 지역 : ");
+        setLocation(sc.next());
+        System.out.println("======================================================\n");
+
         String sql = "INSERT INTO Hospital VALUES ('" + name + "', '" + subject + "', '" + location + "');";
         System.out.println(sql);
         try {

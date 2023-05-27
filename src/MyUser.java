@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class MyUser implements DB_func{
     ResultSet resultSet = null;     // 출력할 결과
-    long id;
+    int id;
     String nickname;
     String username;
     String regist_num;
@@ -111,6 +111,7 @@ public class MyUser implements DB_func{
                 this.regist_num = resultSet.getString(4);
                 this.gender = resultSet.getString(5);
                 System.out.println("로그인 성공!");
+                id = resultSet.getInt(1);
                 result = true;
             }
         } catch(SQLException e) {
@@ -121,17 +122,14 @@ public class MyUser implements DB_func{
     }
 
     @Override
-    public void insert() {
+    public void insert() throws SQLException{
         String sql = "INSERT INTO MyUser VALUES ('" + nickname + "', '" + username + "', '" + regist_num + "', '" + gender + "');";
         System.out.println(sql);
-        try {
-            Main.stmt.execute(sql);
-            System.out.println("회원가입 성공!");
-            resultSet = Main.stmt.executeQuery("SELECT U# FROM MyUser WHERE nickname = '" + nickname + "';");
-            id = resultSet.getInt(0);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        Main.stmt.execute(sql);
+        System.out.println("회원가입 성공!");
+        resultSet = Main.stmt.executeQuery("SELECT U# FROM MyUser WHERE nickname = '" + nickname + "';");
+        id = resultSet.getInt(0);
     }
 
     @Override

@@ -70,7 +70,7 @@ public class Main {
                 System.out.println("4~10 중에서 선택하세요.");
             }
 
-
+            int num = 0;
             switch (input_num) {
                 case 4: // 병원 등록
                     hospital = new Hospital();
@@ -82,16 +82,8 @@ public class Main {
                     System.out.println("1. 등록    2. 수정    3. 삭제");
                     System.out.println("========================================================");
                     Hospital_record hospital_record = new Hospital_record();
-                    hospital_record.insert();
-                    break;
-                case 6: // 신체 측정 기록
-                    System.out.println("==================== [ 신체 측정 기록 ] ===================");
-                    System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("1. 등록    2. 수정    3. 삭제");
-                    System.out.println("========================================================");
-                    new Physical_info().select();
+                    hospital_record.select();
 
-                    int num = 0;
                     try {
                         num = scanner.nextInt();
                         if (num < 1 || num > 3) {
@@ -103,14 +95,41 @@ public class Main {
 
                     switch (num) {
                         case 1:
-                            Physical_info physical_info = new Physical_info(myUser.id);
+                            hospital_record.insert();
+                            break;
+                        case 2:
+                            hospital_record.update();
+                            break;
+                        case 3:
+                            hospital_record.delete();
+                            break;
+                    }
+                    break;
+                case 6: // 신체 측정 기록
+                    System.out.println("==================== [ 신체 측정 기록 ] ===================");
+                    System.out.println("원하는 번호를 입력하세요.");
+                    System.out.println("1. 등록    2. 수정    3. 삭제");
+                    System.out.println("========================================================");
+                    Physical_info physical_info = new Physical_info();
+                    physical_info.select();
+                    try {
+                        num = scanner.nextInt();
+                        if (num < 1 || num > 3) {
+                            throw new InputMismatchException();
+                        }
+                    }   catch (InputMismatchException e) {
+                        System.out.println("1~3 중에서 선택하세요.");
+                    }
+
+                    switch (num) {
+                        case 1:
                             physical_info.insert();
                             break;
                         case 2:
-                            new Physical_info().update();
+                            physical_info.update();
                             break;
                         case 3:
-                            new Physical_info().delete();
+                            physical_info.delete();
                             break;
                     }
                     break;

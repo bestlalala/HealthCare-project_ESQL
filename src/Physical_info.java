@@ -19,25 +19,7 @@ public class Physical_info implements DB_func{
     ResultSet resultSet;
 
     public Physical_info() {
-    }
-
-    public Physical_info(long u_id) {
-        this.u_id = u_id;
-        System.out.println("=================== [ 신체 측정 정보 등록 ] ====================");
-        System.out.print("- 키(cm): ");
-        setHeight(sc.nextFloat());
-        System.out.println("- 체중(kg): ");
-        setWeight(sc.nextFloat());
-        System.out.println("- 허리 둘레: ");
-        setWaist(sc.nextFloat());
-        System.out.println("- 체지방률(%): ");
-        setFat(sc.nextFloat());
-        System.out.println("- 골격근량(kg): ");
-        setMuscle(sc.nextFloat());
-        System.out.println("- 기초대사량(kcal): ");
-        setMetabolic_rate(sc.nextInt());
-        System.out.println("- 측정 날짜 (오늘이라면 0을 입력하세요.): ");
-        setMeasure_date(sc.next());
+        this.u_id = Main.myUser.id;
     }
 
     public void setMeasure_date(String measure_date) {
@@ -93,8 +75,32 @@ public class Physical_info implements DB_func{
 
     @Override
     public void insert() {
+        while (true) {
+            try {
+                System.out.println("=================== [ 신체 측정 정보 등록 ] ====================");
+                System.out.print("- 키(cm): ");
+                setHeight(sc.nextFloat());
+                System.out.println("- 체중(kg): ");
+                setWeight(sc.nextFloat());
+                System.out.println("- 허리 둘레: ");
+                setWaist(sc.nextFloat());
+                System.out.println("- 체지방률(%): ");
+                setFat(sc.nextFloat());
+                System.out.println("- 골격근량(kg): ");
+                setMuscle(sc.nextFloat());
+                System.out.println("- 기초대사량(kcal): ");
+                setMetabolic_rate(sc.nextInt());
+                System.out.println("- 측정 날짜 (오늘이라면 0을 입력하세요.): ");
+                setMeasure_date(sc.next());
+                break;
+            } catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.println("알맞는 값을 입력헤주세요.");
+            }
+        }
+
         String sql = "INSERT INTO Physical_info (u#, user_height, user_weight, waist, fat, muscle, metabolic_rate, p_date)" +
-                "VALUES ('" + Main.myUser.id+ "', '" + height + "', '" +
+                "VALUES ('" + u_id+ "', '" + height + "', '" +
                 weight + "', '" + waist + "', '" + fat + "', '"+ muscle + "', '" + metabolic_rate + "', '" +measure_date + "');";
         System.out.println(sql);
         try {
@@ -106,12 +112,41 @@ public class Physical_info implements DB_func{
     }
 
     @Override
-    public void update() throws SQLException, InputMismatchException{
+    public void update() throws SQLException {
         System.out.println("=================== [ 신체 측정 기록 수정 ] ====================");
         System.out.println("- 수정할 번호: ");
         int p_num = sc.nextInt();
-        System.out.println("- 수정할 항목(키, 체중, 허리 둘레, 체지방률, 골격근량 항목만 수정 가능): ");
-        String attr = sc.next();
+        System.out.println("- 수정할 항목의 번호를 입력하세요. : ");
+        System.out.println("1. 키   2. 체중   3. 허리 둘레   4. 체지방률   5. 골격근량");
+        System.out.println("--------------------------------------------------");
+        String attr = "";
+        try {
+            int num = sc.nextInt();
+
+            if (num < 1 || num > 5) {
+                throw new InputMismatchException();
+            }
+            switch (num) {
+                case 1:
+                    attr = "height";
+                    break;
+                case 2:
+                    attr = "weight";
+                    break;
+                case 3:
+                    attr = "waist";
+                    break;
+                case 4:
+                    attr = "fat";
+                    break;
+                case 5:
+                    attr = "muscle";
+                    break;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("알맞은 번호를 입력하세요.");
+        }
+
         System.out.println("- 무슨 값으로 수정할까요?: ");
         float val = sc.nextInt();
 
@@ -125,6 +160,7 @@ public class Physical_info implements DB_func{
 
     @Override
     public void delete() throws SQLException {
+        System.out.println("=================== [ 신체 측정 기록 삭제 ] ====================");
         System.out.println("- 삭제할 기록의 번호를 입력하세요. :");
         int p_num = sc.nextInt();
 

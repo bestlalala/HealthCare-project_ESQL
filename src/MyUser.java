@@ -94,11 +94,11 @@ public class MyUser implements DB_func{
 
     @Override
     public void select() throws SQLException {
-        resultSet = Main.stmt.executeQuery("SELECT * FROM MyUser;");
+        resultSet = Main.stmt.executeQuery("SELECT * FROM MyUser WHERE nickname = '" + this.nickname + "';");
 
         while(resultSet.next()) {
-            //getInt(1)은 컬럼의 1번째 값을 Int형으로 가져온다. / getString(2)는 컬럼의 2번째 값을 String형으로 가져온다.
-            System.out.println(resultSet.getInt(1) + "\t" + resultSet.getString(2));
+            System.out.println(resultSet.getString(2) + "\t" + resultSet.getString(3)
+                    + "\t" + resultSet.getString(4) + "\t" + resultSet.getString(5));
         }
     }
 
@@ -134,12 +134,12 @@ public class MyUser implements DB_func{
         }
     }
 
-    @Override // 이름 수정
-    public void update(String id) {
-        System.out.println("======================================================\n");
+    @Override
+    public void update() throws SQLException {
+        System.out.println("======================================================");
         System.out.print("- 이름: ");
         setUsername(sc.next());
-        System.out.println("======================================================\n");
+        System.out.println("======================================================");
 
         String sql = "UPDATE MyUser SET username = '" + this.username + "' WHERE nickname = '" + this.nickname +"';";
 
@@ -149,6 +149,10 @@ public class MyUser implements DB_func{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void update(String id) {
+
     }
 
     @Override   // 회원 탈퇴 (회원 정보 삭제)

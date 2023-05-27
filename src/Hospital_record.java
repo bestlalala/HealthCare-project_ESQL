@@ -85,9 +85,10 @@ public class Hospital_record implements DB_func{
     }
 
     @Override
-    public void update(String id) {
+    public void update() throws SQLException {
 
     }
+
 
     @Override
     public void delete() throws SQLException {

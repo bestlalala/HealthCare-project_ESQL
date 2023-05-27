@@ -57,7 +57,7 @@ public class Main {
             System.out.println("======================================================\n");
             System.out.println("원하는 번호를 입력하세요.");
             System.out.println("4. 병원 등록    5. 병원 진료 기록    6. 오늘의 컨디션");
-            System.out.println("7. 건강기록 모아보기    8. 회원 정보(이름) 수정");
+            System.out.println("7. 건강기록 모아보기    8. 회원 정보(이름) 수정     9. 회원 탈퇴");
             System.out.println("======================================================\n");
 
             try {
@@ -84,6 +84,11 @@ public class Main {
                     break;
                 case 8: // 회원 정보 수정
                     myUser.update(myUser.nickname);
+                    break;
+                case 9: // 회원 탈퇴
+                    myUser.delete();
+                    System.out.println("\n** 프로그램을 종료합니다. **");
+                    System.exit(0);
                     break;
             }
         }

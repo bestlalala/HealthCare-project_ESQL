@@ -134,7 +134,7 @@ public class MyUser implements DB_func{
         }
     }
 
-    @Override
+    @Override // 이름 수정
     public void update(String id) {
         System.out.println("======================================================\n");
         System.out.print("- 이름: ");
@@ -151,8 +151,12 @@ public class MyUser implements DB_func{
         }
     }
 
-    @Override
-    public void delete() {
-
+    @Override   // 회원 탈퇴 (회원 정보 삭제)
+    public void delete() throws SQLException {
+        String sql = "DELETE FROM MyUser " + "WHERE U# = " + this.id;
+        int res = Main.stmt.executeUpdate(sql);
+        if (res > 0) {
+            System.out.println("회원 탈퇴가 완료되었습니다.");
+        }
     }
 }

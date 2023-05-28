@@ -77,11 +77,12 @@ public class Hospital implements DB_func{
             System.out.println(resultSet.getInt(1) + "\t|" + resultSet.getString(2)
                     + "\t|" + resultSet.getString(3)+ "\t|" + resultSet.getString(4));
         }
+        System.out.println("--------------------------------------------------");
     }
 
     @Override
     public void insert() throws SQLException {
-        System.out.println("===================== [ 병원 등록 ] ======================\n");
+        System.out.println("===================== [ 병원 등록 ] ======================");
         setName();
         setSubject();
         setLocation();

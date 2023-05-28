@@ -1,3 +1,4 @@
+import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -198,45 +199,80 @@ public class Physical_info implements DB_func{
 
     }
 
+    public boolean exist(String table, String attr, int pk) throws SQLException {
+        boolean result;
+        resultSet = Main.stmt.executeQuery("SELECT * FROM " + table + " WHERE " + attr + " = " + pk + ";");
+        result = resultSet.next();
+        return result;
+    }
+
     @Override
     public void update() throws SQLException {
-        System.out.println("=================== [ 신체 측정 기록 수정 ] ====================");
-        System.out.println("- 수정할 번호: ");
-        int p_num = sc.nextInt();
-        System.out.println("- 수정할 항목의 번호를 입력하세요. : ");
-        System.out.println("1. 키   2. 체중   3. 허리 둘레   4. 체지방률   5. 골격근량");
-        System.out.println("--------------------------------------------------");
+        int p_num;
         String attr = "";
-        try {
-            int num = sc.nextInt();
+        System.out.println("=================== [ 신체 측정 기록 수정 ] ====================");
+        while (true) {
+            try {
+                System.out.println("- 수정할 번호: ");
+                p_num = Integer.parseInt(sc.nextLine());
 
-            if (num < 1 || num > 5) {
-                throw new InputMismatchException();
+                if (!exist("Physical_info", "P#", p_num)) {
+                    System.out.println("목록에 있는 기록의 번호를 입력해주세요.");
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("알맞은 번호를 입력하세요.");
             }
-            switch (num) {
-                case 1:
-                    attr = "height";
-                    break;
-                case 2:
-                    attr = "weight";
-                    break;
-                case 3:
-                    attr = "waist";
-                    break;
-                case 4:
-                    attr = "fat";
-                    break;
-                case 5:
-                    attr = "muscle";
-                    break;
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("알맞은 번호를 입력하세요.");
         }
 
-        System.out.println("- 무슨 값으로 수정할까요?: ");
-        float val = sc.nextInt();
-
+        int num = 0;
+        while (true) {
+            try {
+                System.out.println("- 수정할 항목의 번호를 입력하세요. : ");
+                System.out.println("1. 키   2. 체중   3. 허리 둘레   4. 체지방률   5. 골격근량");
+                System.out.println("--------------------------------------------------");
+                num = Integer.parseInt(sc.nextLine());
+                if (num < 1 || num > 5) {
+                    throw new Exception();
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("알맞은 번호를 입력하세요(1~5)");
+            }
+        }
+        switch (num) {
+            case 1:
+                attr = "height";
+                break;
+            case 2:
+                attr = "weight";
+                break;
+            case 3:
+                attr = "waist";
+                break;
+            case 4:
+                attr = "fat";
+                break;
+            case 5:
+                attr = "muscle";
+                break;
+        }
+        float val = 0;
+        while (true) {
+            try {
+                System.out.println("- 무슨 값으로 수정할까요?: ");
+                val = Float.parseFloat(sc.nextLine());
+                if (val > 0) {
+                    break;
+                } else {
+                    throw new Exception("양수를 입력하세요.");
+                }
+            } catch (Exception e) {
+                System.out.println("알맞은 값을 입력하세요.");
+            }
+        }
         String sql = "UPDATE Physical_info SET " + attr + " = " + val + "WHERE P# = " + p_num + ";";
 
         Main.stmt.executeUpdate(sql);

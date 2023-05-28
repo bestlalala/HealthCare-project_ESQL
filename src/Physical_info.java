@@ -165,7 +165,7 @@ public class Physical_info implements DB_func{
     public void select() throws SQLException {
         System.out.println("================== [ 신체 측정 기록 조회 ] ==================");
         System.out.println("|NO| 키(cm) | 체중(kg) | BMI | 허리 둘레(cm) | 체지방률(%) | 골격근량(kg) | 기초대사량(kcal) |  측정 날짜  |");
-        resultSet = Main.stmt.executeQuery("SELECT * FROM Physical_info WHERE u# = " + u_id + ";");
+        resultSet = Main.stmt.executeQuery("SELECT * FROM Physical_info WHERE u# = " + u_id + " ORDER BY p_date;");
 
         while(resultSet.next()) {
             System.out.println("| " + resultSet.getInt(1) + " |\t" + resultSet.getFloat(3)
@@ -244,10 +244,10 @@ public class Physical_info implements DB_func{
         }
         switch (num) {
             case 1:
-                attr = "height";
+                attr = "user_height";
                 break;
             case 2:
-                attr = "weight";
+                attr = "user_weight";
                 break;
             case 3:
                 attr = "waist";
@@ -273,13 +273,11 @@ public class Physical_info implements DB_func{
                 System.out.println("알맞은 값을 입력하세요.");
             }
         }
-        String sql = "UPDATE Physical_info SET " + attr + " = " + val + "WHERE P# = " + p_num + ";";
-
+        String sql = "UPDATE Physical_info SET " + attr + " = " + val + " WHERE P# = " + p_num + ";";
+        System.out.println(sql);
         Main.stmt.executeUpdate(sql);
         System.out.println("수정 완료");
-
     }
-
 
     @Override
     public void delete() throws SQLException {

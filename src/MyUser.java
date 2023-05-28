@@ -1,6 +1,7 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MyUser implements DB_func{
@@ -12,78 +13,93 @@ public class MyUser implements DB_func{
     String gender;
     Scanner sc = new Scanner(System.in);
 
-    public void setNickname(String nickname) {
+    public void setNickname() {
+        String nickname;
         while (true) {
-            if (nickname.length() <= 15) {
-                this.nickname = nickname;
-                break;
-            } else {
-                System.out.println("ERROR! 15자 이내로 입력해주세요.");
-                System.out.print("- 닉네임 (15자 이내) : ");
+            try {
+                System.out.print("- 닉네임 (공백X, 15자 이내) : ");
                 nickname = sc.next();
+                if (nickname.length() <= 15) {
+                    this.nickname = nickname;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR! 15자 이내로 입력해주세요.");
             }
         }
     }
 
-    public void setUsername(String username) {
+    public void setUsername() {
+        String username;
         while (true) {
-            if (username.length() <= 50) {
-                this.username = username;
-                break;
-            } else {
-                System.out.println("ERROR! 50자 이내로 입력해주세요.");
+            try {
                 System.out.print("- 이름 (50자 이내) : ");
                 username = sc.next();
+                if (username.length() <= 50) {
+                    this.username = username;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR! 50자 이내로 입력해주세요.");
             }
         }
 
     }
 
-    public void setRegist_num(String regist_num) {
+    public void setRegist_num() {
+        String regist_num;
         while (true) {
-            if (regist_num.length() == 7) {
+            try {
+                System.out.print("- 주민번호 앞 6자리와 뒤 1자리 (ex. 0106274) : ");
+                regist_num = sc.next();
+                if (regist_num.length() == 7) {
 //                int year = Integer.parseInt(regist_num.substring(0, 2));
 //                int month = Integer.parseInt(regist_num.substring(2, 4));
 //                int day = Integer.parseInt(regist_num.substring(4, 6));
-                int gen = Integer.parseInt(regist_num.substring(6, 7));
-                if (gen > 0 && gen < 5) {
-                    this.regist_num = regist_num;
-                    break;
+                    int gen = Integer.parseInt(regist_num.substring(6, 7));
+                    if (gen > 0 && gen < 5) {
+                        this.regist_num = regist_num;
+                        break;
+                    } else {
+                        System.out.println("ERROR! 주민번호가 알맞지 않습니다. 다시 입력해주세요.");
+                    }
                 } else {
-                    System.out.println("ERROR! 주민번호가 알맞지 않습니다. 다시 입력해주세요.");
-                    System.out.print("- 주민번호 앞 6자리와 뒤 1자리 (ex. 0106274) : ");
-                    regist_num = sc.next();
+                    throw new InputMismatchException();
                 }
-            } else {
+            } catch (InputMismatchException e) {
                 System.out.println("ERROR! 주민번호가 알맞지 않습니다. 다시 입력해주세요.");
-                System.out.print("- 주민번호 앞 6자리와 뒤 1자리 (ex. 0106274) : ");
-                regist_num = sc.next();
             }
         }
     }
 
-    public void setGender(String gender) {
+    public void setGender() {
+        String gender;
         while (true) {
-            if (gender.equals("F") || gender.equals("M")) {
-                this.gender = gender;
-                break;
-            } else {
-                System.out.println("ERROR! 여성은 F, 남성은 M을 입력해주세요.");
+            try {
                 System.out.print("- 성별(F/M): ");
                 gender = sc.next();
+                if (gender.equals("F") || gender.equals("M")) {
+                    this.gender = gender;
+                    break;
+                } else {
+                   throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR! 여성은 F, 남성은 M을 입력해주세요.");
             }
         }
     }
 
     public MyUser()  {
-        System.out.print("- 닉네임 (15자 이내) : ");
-        setNickname(sc.next());
-        System.out.print("- 이름 (50자 이내) : ");
-        setUsername(sc.next());
-        System.out.print("- 주민번호 앞 6자리와 뒤 1자리 (ex. 0106274) : ");
-        setRegist_num(sc.next());
-        System.out.print("- 성별(F/M): ");
-        setGender(sc.next());
+        System.out.println("===================== [ 회원 가입 ] ======================\n");
+        setNickname();
+        setUsername();
+        setRegist_num();
+        setGender();
         System.out.println("======================================================\n");
     }
 
@@ -94,11 +110,13 @@ public class MyUser implements DB_func{
 
     @Override
     public void select() throws SQLException {
+        System.out.println("|     닉네임     |    이름    |   주민번호   | 성별 |");
+
         resultSet = Main.stmt.executeQuery("SELECT * FROM MyUser WHERE nickname = '" + this.nickname + "';");
 
         while(resultSet.next()) {
-            System.out.println(resultSet.getString(2) + "\t" + resultSet.getString(3)
-                    + "\t" + resultSet.getString(4) + "\t" + resultSet.getString(5));
+            System.out.println("| " + resultSet.getString(2) + "  |  " + resultSet.getString(3)
+                    + "  |  " + resultSet.getString(4) + "  |  " + resultSet.getString(5) + "  |");
         }
     }
 
@@ -135,21 +153,13 @@ public class MyUser implements DB_func{
     @Override
     public void update() throws SQLException {
         System.out.println("======================================================");
-        System.out.print("- 이름: ");
-        setUsername(sc.next());
+        setUsername();
         System.out.println("======================================================");
 
         String sql = "UPDATE MyUser SET username = '" + this.username + "' WHERE nickname = '" + this.nickname +"';";
 
-        try {
-            Main.stmt.executeUpdate(sql);
-            System.out.println("수정 완료");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void update(String id) {
+        Main.stmt.executeUpdate(sql);
+        System.out.println("수정 완료");
 
     }
 
@@ -159,6 +169,8 @@ public class MyUser implements DB_func{
         int res = Main.stmt.executeUpdate(sql);
         if (res > 0) {
             System.out.println("회원 탈퇴가 완료되었습니다.");
+        } else {
+            System.out.println("회월 탈퇴를 실패하였습니다.");
         }
     }
 }

@@ -1,5 +1,6 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Hospital implements DB_func{
@@ -12,22 +13,64 @@ public class Hospital implements DB_func{
     public Hospital() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName() {
+        String name;
+        while (true) {
+            try {
+                System.out.print("- 병원 이름 (50자 이내) : ");
+                name = sc.nextLine();
+                if (name.length() <= 50) {
+                    this.name = name;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞은 값을 입력해주세요.");
+            }
+        }
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubject() {
+        String subject;
+        while (true) {
+            try {
+                System.out.print("- 병원 종류 (20자 이내, ex. general) : ");
+                subject = sc.nextLine();
+                if (subject.length() <= 20) {
+                    this.subject = subject;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞은 값을 입력해주세요.");
+            }
+        }
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocation() {
+        String location;
+        while (true) {
+            try {
+                System.out.print("- 지역 (15자 이내) : ");
+                location = sc.nextLine();
+                if (location.equals("\n") || location.length() <= 15) {
+                    this.location = location;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞은 값을 입력해주세요.");
+            }
+        }
     }
 
     @Override   // 전체 병원 조회
     public void select() throws SQLException {
         System.out.println("[병원 목록]");
-        System.out.println("<id>  |   <병원명>   |   <병원종류>   |   <지역>");
+        System.out.println("|NO|      병원명     |   병원종류   |  지역  |");
         resultSet = Main.stmt.executeQuery("SELECT * FROM Hospital;");
 
         while(resultSet.next()) {
@@ -37,29 +80,22 @@ public class Hospital implements DB_func{
     }
 
     @Override
-    public void insert() {
+    public void insert() throws SQLException {
         System.out.println("===================== [ 병원 등록 ] ======================\n");
-        System.out.print("- 병원 이름 (50자 이내) : ");
-        setName(sc.next());
-        System.out.print("- 병원 종류 (20자 이내, ex. general) : ");
-        setSubject(sc.next());
-        System.out.print("- 지역 : ");
-        setLocation(sc.next());
+        setName();
+        setSubject();
+        setLocation();
         System.out.println("======================================================\n");
 
         String sql = "INSERT INTO Hospital VALUES ('" + name + "', '" + subject + "', '" + location + "');";
-        System.out.println(sql);
-        try {
-            Main.stmt.execute(sql);
-            System.out.println("병원 등록 성공!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        System.out.println(sql);
+        Main.stmt.execute(sql);
+        System.out.println("병원 등록 성공!");
+
     }
 
     @Override
     public void update() throws SQLException {
-
     }
 
 

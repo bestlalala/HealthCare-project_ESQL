@@ -54,7 +54,7 @@ public class Main {
         while (true) {
             System.out.println("======================================================");
             System.out.println("원하는 번호를 입력하세요.");
-            System.out.println("4. 병원 등록    5. 병원 진료 기록    6. 신체 측정 기록");
+            System.out.println("4. 병원 목록    5. 병원 진료 기록    6. 신체 측정 기록");
             System.out.println("7. 건강기록 모아보기    8. 회원 정보 조회     9. 회원 탈퇴");
             System.out.println("10. 종료");
             System.out.println("======================================================\n");
@@ -71,24 +71,53 @@ public class Main {
             int num = 0;
             switch (input_num) {
                 case 4: // 병원 등록
-                    hospital = new Hospital();
-                    hospital.insert();
+                    while (true) {
+                        System.out.println("==================== [ 병원 목록 ] ===================");
+                        System.out.println("원하는 번호를 입력하세요.");
+                        System.out.println("1. 등록    2. 돌아가기");
+                        System.out.println("========================================================");
+                        hospital = new Hospital();
+                        hospital.select();
+
+                        try {
+                            num = scanner.nextInt();
+                            if (num < 1 || num > 2) {
+                                throw new InputMismatchException();
+                            }
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("1~2 중에서 선택하세요.");
+                        }
+                    }
+
+                    switch (num) {
+                        case 1:
+                            hospital.insert();
+                            break;
+                        case 2:
+                            break;
+                    }
+
                     break;
                 case 5: // 병원 진료 기록
-                    System.out.println("==================== [ 병원 진료 기록 ] ===================");
-                    System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("1. 등록    2. 수정    3. 삭제    4. 돌아가기");
-                    System.out.println("========================================================");
-                    Hospital_record hospital_record = new Hospital_record();
-                    hospital_record.select();
+                    Hospital_record hospital_record;
+                    while (true) {
+                        System.out.println("==================== [ 병원 진료 기록 ] ===================");
+                        System.out.println("원하는 번호를 입력하세요.");
+                        System.out.println("1. 등록    2. 수정    3. 삭제    4. 돌아가기");
+                        System.out.println("========================================================");
+                        hospital_record = new Hospital_record();
+                        hospital_record.select();
 
-                    try {
-                        num = scanner.nextInt();
-                        if (num < 1 || num > 4) {
-                            throw new InputMismatchException();
+                        try {
+                            num = scanner.nextInt();
+                            if (num < 1 || num > 4) {
+                                throw new InputMismatchException();
+                            }
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("1~4 중에서 선택하세요.");
                         }
-                    }   catch (InputMismatchException e) {
-                        System.out.println("1~4 중에서 선택하세요.");
                     }
 
                     switch (num) {
@@ -106,19 +135,23 @@ public class Main {
                     }
                     break;
                 case 6: // 신체 측정 기록
-                    System.out.println("==================== [ 신체 측정 기록 ] ===================");
-                    System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("1. 등록    2. 수정    3. 삭제    4. 돌아가기");
-                    System.out.println("========================================================");
-                    Physical_info physical_info = new Physical_info();
-                    physical_info.select();
-                    try {
-                        num = scanner.nextInt();
-                        if (num < 1 || num > 4) {
-                            throw new InputMismatchException();
+                    Physical_info physical_info;
+                    while (true) {
+                        System.out.println("==================== [ 신체 측정 기록 ] ===================");
+                        System.out.println("원하는 번호를 입력하세요.");
+                        System.out.println("1. 등록    2. 수정    3. 삭제    4. 돌아가기");
+                        System.out.println("========================================================");
+                        physical_info = new Physical_info();
+                        physical_info.select();
+                        try {
+                            num = scanner.nextInt();
+                            if (num < 1 || num > 4) {
+                                throw new InputMismatchException();
+                            }
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("1~4 중에서 선택하세요.");
                         }
-                    }   catch (InputMismatchException e) {
-                        System.out.println("1~4 중에서 선택하세요.");
                     }
 
                     switch (num) {
@@ -138,22 +171,25 @@ public class Main {
                 case 7: // 건강기록 모아보기
                     break;
                 case 8: // 회원 정보 조회
-                    System.out.println("==================== [ 회원 정보 ] ===================");
-                    myUser.select();
-                    System.out.println("========================================================");
-                    System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("1. 회원 정보 수정(이름)    2. 돌아가기");
-                    System.out.println("========================================================");
-                    int n = 0;
-                    try {
-                        n = scanner.nextInt();
-                        if (n == 1) {
-                            myUser.update();
-                        } else if (n == 2) {
-                            break;
+                    while (true) {
+                        System.out.println("==================== [ 회원 정보 ] ===================");
+                        myUser.select();
+                        System.out.println("========================================================");
+                        System.out.println("원하는 번호를 입력하세요.");
+                        System.out.println("1. 회원 정보 수정(이름)    2. 돌아가기");
+                        System.out.println("========================================================");
+                        int n = 0;
+                        try {
+                            n = scanner.nextInt();
+                            if (n == 1) {
+                                myUser.update();
+                                break;
+                            } else if (n == 2) {
+                                break;
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("1, 2 중에서 선택하세요.");
                         }
-                    } catch (InputMismatchException e) {
-                        System.out.println("1, 2 중에서 선택하세요.");
                     }
                     break;
                 case 9: // 회원 탈퇴

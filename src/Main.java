@@ -142,8 +142,7 @@ public class Main {
                     myUser.select();
                     System.out.println("========================================================");
                     System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("- 1. 회원 정보 수정하기");
-                    System.out.println("- 2. 돌아가기");
+                    System.out.println("1. 회원 정보 수정(이름)    2. 돌아가기");
                     System.out.println("========================================================");
                     int n = 0;
                     try {

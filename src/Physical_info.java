@@ -59,7 +59,7 @@ public class Physical_info implements DB_func{
 
     @Override
     public void select() throws SQLException {
-        System.out.println("=================== [ 신체 측정 기록 조회 ] ====================");
+        System.out.println("================== [ 신체 측정 기록 조회 ] ==================");
         System.out.println("| id | 키 |  체중  | BMI |  허리 둘레  |  체지방률  |  골격근량  |  기초대사량  |  측정 날짜  |");
         resultSet = Main.stmt.executeQuery("SELECT * FROM Physical_info WHERE u# = " + u_id + ";");
 
@@ -68,7 +68,7 @@ public class Physical_info implements DB_func{
                     + "\t|" + resultSet.getFloat(4)+ "\t|" + resultSet.getFloat(5)
                     + "\t|" + resultSet.getFloat(6)+ "\t|" + resultSet.getFloat(7)
                     + "\t|" + resultSet.getFloat(8)+ "\t|" + resultSet.getFloat(9)
-                    + "\t|" + resultSet.getFloat(10));
+                    + "\t|" + resultSet.getString(10));
         }
         System.out.println("========================================================");
     }

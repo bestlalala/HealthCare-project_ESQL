@@ -77,18 +77,18 @@ public class Main {
                 case 5: // 병원 진료 기록
                     System.out.println("==================== [ 병원 진료 기록 ] ===================");
                     System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("1. 등록    2. 수정    3. 삭제");
+                    System.out.println("1. 등록    2. 수정    3. 삭제    4. 돌아가기");
                     System.out.println("========================================================");
                     Hospital_record hospital_record = new Hospital_record();
                     hospital_record.select();
 
                     try {
                         num = scanner.nextInt();
-                        if (num < 1 || num > 3) {
+                        if (num < 1 || num > 4) {
                             throw new InputMismatchException();
                         }
                     }   catch (InputMismatchException e) {
-                        System.out.println("1~3 중에서 선택하세요.");
+                        System.out.println("1~4 중에서 선택하세요.");
                     }
 
                     switch (num) {
@@ -101,22 +101,24 @@ public class Main {
                         case 3:
                             hospital_record.delete();
                             break;
+                        case 4:
+                            break;
                     }
                     break;
                 case 6: // 신체 측정 기록
                     System.out.println("==================== [ 신체 측정 기록 ] ===================");
                     System.out.println("원하는 번호를 입력하세요.");
-                    System.out.println("1. 등록    2. 수정    3. 삭제");
+                    System.out.println("1. 등록    2. 수정    3. 삭제    4. 돌아가기");
                     System.out.println("========================================================");
                     Physical_info physical_info = new Physical_info();
                     physical_info.select();
                     try {
                         num = scanner.nextInt();
-                        if (num < 1 || num > 3) {
+                        if (num < 1 || num > 4) {
                             throw new InputMismatchException();
                         }
                     }   catch (InputMismatchException e) {
-                        System.out.println("1~3 중에서 선택하세요.");
+                        System.out.println("1~4 중에서 선택하세요.");
                     }
 
                     switch (num) {
@@ -128,6 +130,8 @@ public class Main {
                             break;
                         case 3:
                             physical_info.delete();
+                            break;
+                        case 4:
                             break;
                     }
                     break;

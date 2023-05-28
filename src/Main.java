@@ -19,7 +19,6 @@ public class Main {
             System.out.println("환영합니다. 원하는 번호를 입력하세요.");
             System.out.println("1. 회원가입    2. 로그인    3. 종료");
             System.out.println("======================================================");
-            scanner = new Scanner(System.in);
 
             try {
                 input_num = scanner.nextInt();
@@ -37,7 +36,6 @@ public class Main {
                     break;
                 case 2: // 로그인
                     System.out.print("- 닉네임: ");
-                    scanner = new Scanner(System.in);
                     String nick = scanner.next();
                     myUser = new MyUser(nick);
                     if (myUser.login()) {
@@ -186,12 +184,6 @@ public class Main {
             con = DriverManager.getConnection(connectionUrl);
             System.out.println("정상적으로 연결되었습니다.");
             stmt = con.createStatement();
-//            resultSet = stmt.executeQuery("SELECT * FROM MyUser;");
-//
-//            while(resultSet.next()) {
-//                //getInt(1)은 컬럼의 1번째 값을 Int형으로 가져온다. / getString(2)는 컬럼의 2번째 값을 String형으로 가져온다.
-//                System.out.println(resultSet.getInt(1) + "\t" + resultSet.getString(2));
-//            }
 
         } catch(SQLException e) {
             System.err.println("con 오류:" + e.getMessage());

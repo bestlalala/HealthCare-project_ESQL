@@ -52,6 +52,7 @@ public class Hospital_record implements DB_func{
                     + "\t|" + resultSet.getString(3)+ "\t|" + resultSet.getString(4)
                     + "\t|" + resultSet.getString(5) + "\t|" + resultSet.getString(6));
         }
+        System.out.println("--------------------------------------------------");
     }
 
     @Override
@@ -90,7 +91,7 @@ public class Hospital_record implements DB_func{
     @Override
     public void update() throws SQLException {
         System.out.println("=================== [ 병원 진료 기록 수정 ] ====================");
-        System.out.println("- 수정할 기록 번호: ");
+        System.out.print("- 수정할 기록 번호: ");
         int r_num = sc.nextInt();
         System.out.println("- 수정할 항목의 번호를 입력하세요. : ");
         System.out.println("1. 병원명   2. 방문 이유   3. 진단 내용   4. 병명  ");
@@ -124,8 +125,10 @@ public class Hospital_record implements DB_func{
                     break;
             }
             if (!attr.equals("hosp_id")) {
-                System.out.println("- 무슨 값으로 수정할까요?: ");
+                System.out.print("- 무슨 값으로 수정할까요?: ");
+                sc.nextLine();
                 String val = sc.nextLine();
+                System.out.println("입력 완료");
                 sql = "UPDATE Hospital_Record SET " + attr + " = '" + val + "' WHERE R# = " + r_num + ";";
             }
         } catch (Exception e) {

@@ -22,93 +22,180 @@ public class Physical_info implements DB_func{
         this.u_id = Main.myUser.id;
     }
 
-    public void setMeasure_date(String measure_date) {
-        if (measure_date.equals("0")) {
-                measure_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    public void setMeasure_date() {
+        String measure_date;
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        while (true) {
+            try {
+                System.out.println("- 측정 날짜 (ex. 2023-05-28)(오늘이라면 0을 입력하세요.): ");
+                measure_date = sc.next();
+                if (measure_date.equals("0")) {
+                    this.measure_date = today;
+                    break;
+                } else { // 미래 날짜인지 확인
+                    int check = today.compareTo(measure_date);
+                    if (check < 0) {
+                        System.out.println("미래 날짜로 설정할 수 없습니다.");
+                        throw new InputMismatchException();
+                    } else {
+                        this.measure_date = measure_date;
+                        break;
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력해주세요.");
+            }
         }
-        this.measure_date = measure_date;
     }
 
-    public void setHeight(float height) {
-        this.height = height;
+    public void setHeight() {
+        float height;
+        while (true) {
+            try {
+                System.out.print("- 키(cm): ");
+                height = sc.nextFloat();
+                if (height > 0) {
+                    this.height = height;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력하세요.");
+            }
+        }
     }
 
-    public void setWeight(float weight) {
-        this.weight = weight;
+    public void setWeight() {
+        float weight;
+        while (true) {
+            try {
+                System.out.println("- 체중(kg): ");
+                weight = sc.nextFloat();
+                if (weight > 0) {
+                    this.weight = weight;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력하세요.");
+            }
+        }
     }
 
-    public void setBMI(float BMI) {
-        this.BMI = BMI;
+    public void setBMI() {
+        this.BMI = weight / (height * height);
     }
 
-    public void setWaist(float waist) {
-        this.waist = waist;
+    public void setWaist() {
+        float waist;
+        while (true) {
+            try {
+                System.out.println("- 허리 둘레: ");
+                waist = sc.nextFloat();
+                if (waist > 0) {
+                    this.waist = waist;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력하세요.");
+            }
+        }
     }
 
-    public void setFat(float fat) {
-        this.fat = fat;
+    public void setFat() {
+        float fat;
+        while (true) {
+            try {
+                System.out.println("- 체지방률(%): ");
+                fat = sc.nextFloat();
+                if (fat > 0) {
+                    this.fat = fat;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력하세요.");
+            }
+        }
     }
 
-    public void setMuscle(float muscle) {
-        this.muscle = muscle;
+    public void setMuscle() {
+        float muscle;
+        while (true) {
+            try {
+                System.out.println("- 골격근량(kg): ");
+                muscle = sc.nextFloat();
+                if (muscle > 0) {
+                    this.muscle = muscle;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력하세요.");
+            }
+        }
     }
 
-    public void setMetabolic_rate(int metabolic_rate) {
-        this.metabolic_rate = metabolic_rate;
+    public void setMetabolic_rate() {
+        int metabolic_rate;
+        while (true) {
+            try {
+                System.out.println("- 기초대사량(kcal): ");
+                metabolic_rate = sc.nextInt();
+                if (metabolic_rate > 0) {
+                    this.metabolic_rate = metabolic_rate;
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("알맞는 값을 입력하세요.");
+            }
+        }
     }
 
     @Override
     public void select() throws SQLException {
         System.out.println("================== [ 신체 측정 기록 조회 ] ==================");
-        System.out.println("| id | 키 |  체중  | BMI |  허리 둘레  |  체지방률  |  골격근량  |  기초대사량  |  측정 날짜  |");
+        System.out.println("|NO| 키(cm) | 체중(kg) | BMI | 허리 둘레(cm) | 체지방률(%) | 골격근량(kg) | 기초대사량(kcal) |  측정 날짜  |");
         resultSet = Main.stmt.executeQuery("SELECT * FROM Physical_info WHERE u# = " + u_id + ";");
 
         while(resultSet.next()) {
-            System.out.println(resultSet.getInt(1) + "\t|" + resultSet.getFloat(3)
-                    + "\t|" + resultSet.getFloat(4)+ "\t|" + resultSet.getFloat(5)
-                    + "\t|" + resultSet.getFloat(6)+ "\t|" + resultSet.getFloat(7)
-                    + "\t|" + resultSet.getFloat(8)+ "\t|" + resultSet.getFloat(9)
-                    + "\t|" + resultSet.getString(10));
+            System.out.println("| " + resultSet.getInt(1) + " |\t" + resultSet.getFloat(3)
+                    + " |\t" + resultSet.getFloat(4)+ " |\t" + resultSet.getFloat(5)
+                    + " |\t" + resultSet.getFloat(6)+ " |\t" + resultSet.getFloat(7)
+                    + " |\t" + resultSet.getFloat(8)+ " |\t" + resultSet.getFloat(9)
+                    + " |\t" + resultSet.getString(10));
         }
         System.out.println("========================================================");
     }
 
     @Override
-    public void insert() {
-        while (true) {
-            try {
-                System.out.println("=================== [ 신체 측정 정보 등록 ] ====================");
-                System.out.print("- 키(cm): ");
-                setHeight(sc.nextFloat());
-                System.out.println("- 체중(kg): ");
-                setWeight(sc.nextFloat());
-                System.out.println("- 허리 둘레: ");
-                setWaist(sc.nextFloat());
-                System.out.println("- 체지방률(%): ");
-                setFat(sc.nextFloat());
-                System.out.println("- 골격근량(kg): ");
-                setMuscle(sc.nextFloat());
-                System.out.println("- 기초대사량(kcal): ");
-                setMetabolic_rate(sc.nextInt());
-                System.out.println("- 측정 날짜 (오늘이라면 0을 입력하세요.): ");
-                setMeasure_date(sc.next());
-                break;
-            } catch (InputMismatchException e) {
-                e.printStackTrace();
-                System.out.println("알맞는 값을 입력헤주세요.");
-            }
-        }
+    public void insert() throws SQLException{
+        System.out.println("=================== [ 신체 측정 정보 등록 ] ====================");
+        setHeight();
+        setWeight();
+        setWaist();
+        setFat();
+        setMuscle();
+        setMetabolic_rate();
+        setMeasure_date();
+        setBMI();
 
         String sql = "INSERT INTO Physical_info (u#, user_height, user_weight, waist, fat, muscle, metabolic_rate, p_date)" +
                 "VALUES ('" + u_id+ "', '" + height + "', '" +
                 weight + "', '" + waist + "', '" + fat + "', '"+ muscle + "', '" + metabolic_rate + "', '" +measure_date + "');";
-        System.out.println(sql);
-        try {
-            Main.stmt.execute(sql);
-            System.out.println("진료 기록 완료");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        System.out.println(sql);
+
+        Main.stmt.execute(sql);
+        System.out.println("진료 기록 완료");
+
     }
 
     @Override

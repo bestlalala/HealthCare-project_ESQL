@@ -140,7 +140,8 @@ public class MyUser implements DB_func{
 
     @Override
     public void insert() throws SQLException{
-        String sql = "INSERT INTO MyUser VALUES ('" + nickname + "', '" + username + "', '" + regist_num + "', '" + gender + "');";
+        String sql = "INSERT INTO MyUser VALUES ('" + nickname + "', '" + username + "', '" +
+                regist_num + "', '" + gender + "');";
         System.out.println(sql);
 
         Main.stmt.execute(sql);

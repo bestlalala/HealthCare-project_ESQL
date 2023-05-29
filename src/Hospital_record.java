@@ -166,9 +166,20 @@ public class Hospital_record implements DB_func{
 
     @Override
     public void update() throws SQLException {
-        System.out.println("=================== [ 병원 진료 기록 수정 ] ====================");
-        System.out.print("- 수정할 기록 번호: ");
-        int r_num = sc.nextInt();
+        int r_num = 0;
+        while (true) {
+            try {
+                System.out.println("=================== [ 병원 진료 기록 수정 ] ====================");
+                System.out.print("- 수정할 기록 번호: ");
+                r_num = sc.nextInt();
+                if (!Main.exist("Hospital_Record", "R#", r_num)) {
+                    System.out.println("목록에 있는 병원의 번호를 입력해주세요.");
+                }
+                break;
+            } catch(Exception e) {
+                    System.out.println("목록에 존재하는 번호를 입력하세요.");
+            }
+        }
         System.out.println("- 수정할 항목의 번호를 입력하세요. : ");
         System.out.println("1. 병원명   2. 방문 이유   3. 진단 내용   4. 병명  ");
         System.out.println("--------------------------------------------------");
@@ -218,10 +229,20 @@ public class Hospital_record implements DB_func{
 
     @Override
     public void delete() throws SQLException {
-        System.out.println("=================== [ 병원 진료 기록 삭제 ] ====================");
-        System.out.print("- 삭제할 기록의 번호를 입력하세요. :");
-        int r_num = sc.nextInt();
-
+        int r_num=0;
+        while (true) {
+            try {
+                System.out.println("=================== [ 병원 진료 기록 삭제 ] ====================");
+                System.out.print("- 삭제할 기록의 번호를 입력하세요. :");
+                r_num = sc.nextInt();
+                if (!Main.exist("Hospital_Record", "R#", r_num)) {
+                    System.out.println("목록에 있는 병원의 번호를 입력해주세요.");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("목록에 존재하는 번호를 입력하세요.");
+            }
+        }
         String sql = "DELETE FROM Hospital_Record " + "WHERE R# = " + r_num;
 
         int res = Main.stmt.executeUpdate(sql);

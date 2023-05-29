@@ -171,10 +171,13 @@ public class Main {
                 case 7: // 건강기록 모아보기
                     System.out.println("==================== [ 건강 기록 모아보기 ] ===================");
                     System.out.println("|   이름   | 달 | 병원 방문 횟수 |  가장 많이 방문한 병원   |  평균 키  | 평균 체중 |");
-                    String sql = "SELECT U.username, MONTH(R.h_date) as month, COUNT(*) as visit_cnt, MAX(H.name) as most_visited_hospital, P2.avg_height, P2.avg_weight\n" +
+                    String sql = "SELECT U.username, MONTH(R.h_date) as month, " +
+                            "COUNT(*) as visit_cnt, MAX(H.name) as most_visited_hospital, " +
+                            "P2.avg_height, P2.avg_weight\n" +
                             "FROM Hospital_Record R\n" +
                             "    LEFT JOIN (\n" +
-                            "        SELECT u#, MONTH(p_date) as month, AVG(P.user_height) as avg_height, AVG(P.user_weight) as avg_weight\n" +
+                            "        SELECT u#, MONTH(p_date) as month, " +
+                            "               AVG(P.user_height) as avg_height, AVG(P.user_weight) as avg_weight\n" +
                             "        FROM Physical_info P\n" +
                             "        GROUP BY u#, MONTH(p_date)\n" +
                             "    ) P2 ON MONTH(R.h_date) = P2.[month] AND R.u# = P2.u#\n" +
@@ -186,7 +189,8 @@ public class Main {
                     ResultSet resultSet = Main.stmt.executeQuery(sql);
 
                     while(resultSet.next()) {
-                        System.out.println("| " + resultSet.getString(1) + "  | " + resultSet.getInt(2)
+                        System.out.println("| " + resultSet.getString(1)
+                                + "  | " + resultSet.getInt(2)
                                 + " | " + resultSet.getInt(3)+ " | " + resultSet.getString(4)
                                 + " | " + resultSet.getFloat(5) + " | " + resultSet.getFloat(6));
                     }

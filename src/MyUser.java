@@ -19,15 +19,25 @@ public class MyUser implements DB_func{
                 System.out.print("- 닉네임 (공백X, 15자 이내) : ");
                 nickname = sc.next();
                 if (nickname.length() <= 15) {
+                    if (exist("MyUser", "nickname", nickname)) {
+                        System.out.println("해당 닉네임은 사용할 수 없습니다.");
+                    }
                     this.nickname = nickname;
                     break;
                 } else {
                     throw new InputMismatchException();
                 }
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException | SQLException e) {
                 System.out.println("ERROR! 15자 이내로 입력해주세요.");
             }
         }
+    }
+
+    public boolean exist(String table, String attr, String val) throws SQLException {
+        boolean result;
+        ResultSet resultSet = Main.stmt.executeQuery("SELECT * FROM " + table + " WHERE " + attr + " = '" + val + "';");
+        result = resultSet.next();
+        return result;
     }
 
     public void setUsername() {
@@ -62,6 +72,7 @@ public class MyUser implements DB_func{
                     int gen = Integer.parseInt(regist_num.substring(6, 7));
                     if (gen > 0 && gen < 5) {
                         this.regist_num = regist_num;
+                        setGender(gen);
                         break;
                     } else {
                         System.out.println("ERROR! 주민번호가 알맞지 않습니다. 다시 입력해주세요.");
@@ -75,21 +86,11 @@ public class MyUser implements DB_func{
         }
     }
 
-    public void setGender() {
-        String gender;
-        while (true) {
-            try {
-                System.out.print("- 성별(F/M): ");
-                gender = sc.next();
-                if (gender.equals("F") || gender.equals("M")) {
-                    this.gender = gender;
-                    break;
-                } else {
-                   throw new InputMismatchException();
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("ERROR! 여성은 F, 남성은 M을 입력해주세요.");
-            }
+    public void setGender(int g) {
+        if (g == '1' || g == '3') {
+            this.gender = "M";
+        } else {
+            this.gender = "F";
         }
     }
 
@@ -98,7 +99,6 @@ public class MyUser implements DB_func{
         setNickname();
         setUsername();
         setRegist_num();
-        setGender();
         System.out.println("======================================================\n");
     }
 
@@ -145,8 +145,9 @@ public class MyUser implements DB_func{
 
         Main.stmt.execute(sql);
         System.out.println("회원가입 성공!");
-        resultSet = Main.stmt.executeQuery("SELECT U# FROM MyUser WHERE nickname = '" + nickname + "';");
-        id = resultSet.getInt(0);
+        login();
+//        resultSet = Main.stmt.executeQuery("SELECT U# FROM MyUser WHERE nickname = '" + nickname + "';");
+//        id = resultSet.getInt(1);
     }
 
     @Override

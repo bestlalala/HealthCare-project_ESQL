@@ -122,13 +122,6 @@ public class Hospital_record implements DB_func{
         System.out.println("--------------------------------------------------");
     }
 
-    public boolean exist(String table, String attr, int pk) throws SQLException {
-        boolean result;
-        resultSet = Main.stmt.executeQuery("SELECT * FROM " + table + " WHERE " + attr + " = " + pk + ";");
-        result = resultSet.next();
-        return result;
-    };
-
     @Override
     public void insert() throws SQLException {
         System.out.println("=================== [ 병원 진료 기록 등록 ] ====================");
@@ -144,7 +137,7 @@ public class Hospital_record implements DB_func{
                 if (i == 0) {   // 목록에 해당 번호가 없다면 다시 입력 받기
                     new Hospital().insert();
                     break;
-                } else if (!exist("Hospital", "H#", i)) {
+                } else if (!Main.exist("Hospital", "H#", i)) {
                     System.out.println("목록에 있는 병원의 번호를 입력해주세요.");
                 } else {
                     setHosp_id(i);
@@ -161,10 +154,10 @@ public class Hospital_record implements DB_func{
         setH_date();
         System.out.println("======================================================\n");
 
-        String sql = "INSERT INTO Hospital_Record (u#, hosp_id, descript, disease, h_date)" +
-                "VALUES ('" + Main.myUser.id+ "', '" + hosp_id + "', '" +
+        String sql = "INSERT INTO Hospital_Record (u#, hosp_id, reason, descript, disease, h_date) " +
+                "VALUES ('" + Main.myUser.id+ "', '" + hosp_id + "', '" + reason + "', '" +
                 descript + "', '" + disease + "', '" + h_date + "');";
-        System.out.println(sql);
+//        System.out.println(sql);
 
         Main.stmt.execute(sql);
         System.out.println("진료 기록 완료");

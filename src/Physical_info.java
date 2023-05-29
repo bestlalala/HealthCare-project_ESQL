@@ -11,7 +11,7 @@ public class Physical_info implements DB_func{
     String measure_date;
     float height;   // 입력 필수
     float weight;   // 입력 필수
-    float BMI;
+    double BMI;
     float waist;
     float fat;
     float muscle;
@@ -57,6 +57,7 @@ public class Physical_info implements DB_func{
                 height = sc.nextFloat();
                 if (height > 0) {
                     this.height = height;
+                    setBMI();
                     break;
                 } else {
                     throw new InputMismatchException();
@@ -71,10 +72,11 @@ public class Physical_info implements DB_func{
         float weight;
         while (true) {
             try {
-                System.out.println("- 체중(kg): ");
+                System.out.print("- 체중(kg): ");
                 weight = sc.nextFloat();
                 if (weight > 0) {
                     this.weight = weight;
+                    setBMI();
                     break;
                 } else {
                     throw new InputMismatchException();
@@ -86,14 +88,15 @@ public class Physical_info implements DB_func{
     }
 
     public void setBMI() {
-        this.BMI = weight / (height * height);
+        double bmi = weight / (height * height/10000);
+        this.BMI = Math.round(bmi);
     }
 
     public void setWaist() {
         float waist;
         while (true) {
             try {
-                System.out.println("- 허리 둘레: ");
+                System.out.print("- 허리 둘레: ");
                 waist = sc.nextFloat();
                 if (waist > 0) {
                     this.waist = waist;
@@ -111,7 +114,7 @@ public class Physical_info implements DB_func{
         float fat;
         while (true) {
             try {
-                System.out.println("- 체지방률(%): ");
+                System.out.print("- 체지방률(%): ");
                 fat = sc.nextFloat();
                 if (fat > 0) {
                     this.fat = fat;
@@ -129,7 +132,7 @@ public class Physical_info implements DB_func{
         float muscle;
         while (true) {
             try {
-                System.out.println("- 골격근량(kg): ");
+                System.out.print("- 골격근량(kg): ");
                 muscle = sc.nextFloat();
                 if (muscle > 0) {
                     this.muscle = muscle;
@@ -147,7 +150,7 @@ public class Physical_info implements DB_func{
         int metabolic_rate;
         while (true) {
             try {
-                System.out.println("- 기초대사량(kcal): ");
+                System.out.print("- 기초대사량(kcal): ");
                 metabolic_rate = sc.nextInt();
                 if (metabolic_rate > 0) {
                     this.metabolic_rate = metabolic_rate;
@@ -189,9 +192,9 @@ public class Physical_info implements DB_func{
         setMeasure_date();
         setBMI();
 
-        String sql = "INSERT INTO Physical_info (u#, user_height, user_weight, waist, fat, muscle, metabolic_rate, p_date)" +
-                "VALUES ('" + u_id+ "', '" + height + "', '" +
-                weight + "', '" + waist + "', '" + fat + "', '"+ muscle + "', '" + metabolic_rate + "', '" +measure_date + "');";
+        String sql = "INSERT INTO Physical_info (u#, user_height, user_weight, BMI, waist, fat, muscle, metabolic_rate, p_date)" +
+                "VALUES (" + u_id+ ", " + height + ", " + weight + ", " +
+                BMI + ", " + waist + ", " + fat + ", "+ muscle + ", " + metabolic_rate + ", '" +measure_date + "');";
 //        System.out.println(sql);
 
         Main.stmt.execute(sql);
@@ -199,12 +202,7 @@ public class Physical_info implements DB_func{
 
     }
 
-    public boolean exist(String table, String attr, int pk) throws SQLException {
-        boolean result;
-        resultSet = Main.stmt.executeQuery("SELECT * FROM " + table + " WHERE " + attr + " = " + pk + ";");
-        result = resultSet.next();
-        return result;
-    }
+
 
     @Override
     public void update() throws SQLException {
@@ -213,10 +211,10 @@ public class Physical_info implements DB_func{
         System.out.println("=================== [ 신체 측정 기록 수정 ] ====================");
         while (true) {
             try {
-                System.out.println("- 수정할 번호: ");
+                System.out.print("- 수정할 번호: ");
                 p_num = Integer.parseInt(sc.nextLine());
 
-                if (!exist("Physical_info", "P#", p_num)) {
+                if (!Main.exist("Physical_info", "P#", p_num)) {
                     System.out.println("목록에 있는 기록의 번호를 입력해주세요.");
                 } else {
                     break;
@@ -242,12 +240,40 @@ public class Physical_info implements DB_func{
                 System.out.println("알맞은 번호를 입력하세요(1~5)");
             }
         }
+        float val = 0;
+        while (true) {
+            try {
+                System.out.print("- 무슨 값으로 수정할까요?: ");
+                val = Float.parseFloat(sc.nextLine());
+                if (val > 0) {
+                    break;
+                } else {
+                    throw new Exception("양수를 입력하세요.");
+                }
+            } catch (Exception e) {
+                System.out.println("알맞은 값을 입력하세요.");
+            }
+        }
         switch (num) {
             case 1:
                 attr = "user_height";
+                this.height = val;
+                resultSet = Main.stmt.executeQuery("SELECT user_weight " +
+                        "FROM Physical_info WHERE P# = " + p_num + ";");
+                if (resultSet.next()) {
+                    this.height = resultSet.getInt(1);
+                    this.BMI = Math.round((weight / (height * height/10000))*100)/100.0;
+                }
                 break;
             case 2:
                 attr = "user_weight";
+                this.weight = val;
+                resultSet = Main.stmt.executeQuery("SELECT user_height " +
+                        "FROM Physical_info WHERE P# = " + p_num + ";");
+                if (resultSet.next()) {
+                    this.height = resultSet.getInt(1);
+                    this.BMI = Math.round((weight / (height * height/10000))*100)/100.0;
+                }
                 break;
             case 3:
                 attr = "waist";
@@ -259,37 +285,34 @@ public class Physical_info implements DB_func{
                 attr = "muscle";
                 break;
         }
-        float val = 0;
-        while (true) {
-            try {
-                System.out.println("- 무슨 값으로 수정할까요?: ");
-                val = Float.parseFloat(sc.nextLine());
-                if (val > 0) {
-                    break;
-                } else {
-                    throw new Exception("양수를 입력하세요.");
-                }
-            } catch (Exception e) {
-                System.out.println("알맞은 값을 입력하세요.");
-            }
-        }
-        String sql = "UPDATE Physical_info SET " + attr + " = " + val + " WHERE P# = " + p_num + ";";
-        System.out.println(sql);
+
+        String sql = "UPDATE Physical_info SET " + attr + " = " + val + ", BMI = " + BMI + " WHERE P# = " + p_num + ";";
+//        System.out.println(sql);
         Main.stmt.executeUpdate(sql);
         System.out.println("수정 완료");
     }
 
     @Override
     public void delete() throws SQLException {
-        System.out.println("=================== [ 신체 측정 기록 삭제 ] ====================");
-        System.out.println("- 삭제할 기록의 번호를 입력하세요. :");
-        int p_num = sc.nextInt();
-
+        int p_num=0;
+        while (true) {
+            try {
+                System.out.println("=================== [ 신체 측정 기록 삭제 ] ====================");
+                System.out.println("- 삭제할 기록의 번호를 입력하세요. :");
+                p_num = sc.nextInt();
+                if (Main.exist("Physical_info", "P#", p_num)) {
+                    break;
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                System.out.println("알맞은 값을 입력해주세요.");
+            }
+        }
         String sql = "DELETE FROM Physical_info " + "WHERE P# = " + p_num;
-
         int res = Main.stmt.executeUpdate(sql);
         if (res > 0) {
-            System.out.println("회원 탈퇴가 완료되었습니다.");
+            System.out.println("기록 삭제가 완료되었습니다.");
         }
     }
 }

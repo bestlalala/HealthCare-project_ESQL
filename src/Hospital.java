@@ -55,7 +55,7 @@ public class Hospital implements DB_func{
             try {
                 System.out.print("- 지역 (15자 이내) : ");
                 location = sc.nextLine();
-                if (location.equals("\n") || location.length() <= 15) {
+                if (location.length() <= 15) {
                     this.location = location;
                     break;
                 } else {

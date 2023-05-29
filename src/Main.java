@@ -23,9 +23,9 @@ public class Main {
             try {
                 input_num = scanner.nextInt();
                 if (input_num < 0 || input_num > 3) {
-                    throw new InputMismatchException();
+                    throw new Exception("알맞은 값을 입력하세요.");
                 }
-            }   catch (InputMismatchException e) {
+            }   catch (Exception e) {
                 System.out.println("1, 2, 3 중에서 선택하세요.");
             }
 
@@ -256,5 +256,12 @@ public class Main {
 //            if(con != null)
 //                con.close();
 //        } catch (SQLException e) {}
+    }
+
+    public static boolean exist(String table, String attr, int pk) throws SQLException {
+        boolean result;
+        ResultSet resultSet = Main.stmt.executeQuery("SELECT * FROM " + table + " WHERE " + attr + " = " + pk + ";");
+        result = resultSet.next();
+        return result;
     }
 }

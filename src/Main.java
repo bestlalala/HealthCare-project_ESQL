@@ -229,7 +229,8 @@ public class Main {
 
     public static void makeConnection() {
         ResultSet resultSet = null;
-        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=HealthCare-prj;user=sa;password=Yslee0627@;encrypt=false;";
+        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=HealthCare-prj;" +
+                "user=sa;password=Yslee0627@;encrypt=false;";
 
         // 1.드라이버 로딩
         try {

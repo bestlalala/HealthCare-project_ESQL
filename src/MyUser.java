@@ -12,6 +12,18 @@ public class MyUser implements DB_func{
     String gender;
     Scanner sc = new Scanner(System.in);
 
+    public MyUser()  {
+        System.out.println("===================== [ 회원 가입 ] ======================\n");
+        setNickname();
+        setUsername();
+        setRegist_num();
+        System.out.println("======================================================\n");
+    }
+
+    public MyUser(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void setNickname() {
         String nickname;
         while (true) {
@@ -35,7 +47,8 @@ public class MyUser implements DB_func{
 
     public boolean exist(String table, String attr, String val) throws SQLException {
         boolean result;
-        ResultSet resultSet = Main.stmt.executeQuery("SELECT * FROM " + table + " WHERE " + attr + " = '" + val + "';");
+        ResultSet resultSet = Main.stmt.executeQuery("SELECT * FROM " + table +
+                " WHERE " + attr + " = '" + val + "';");
         result = resultSet.next();
         return result;
     }
@@ -93,19 +106,6 @@ public class MyUser implements DB_func{
             this.gender = "F";
         }
     }
-
-    public MyUser()  {
-        System.out.println("===================== [ 회원 가입 ] ======================\n");
-        setNickname();
-        setUsername();
-        setRegist_num();
-        System.out.println("======================================================\n");
-    }
-
-    public MyUser(String nickname) {
-        this.nickname = nickname;
-    }
-
 
     @Override
     public void select() throws SQLException {

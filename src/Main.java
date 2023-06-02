@@ -45,6 +45,7 @@ public class Main {
                         continue;
                     }
                 case 3: // 종료
+                    disConnect();
                     System.out.println("\n** 프로그램을 종료합니다. **");
                     System.exit(0);
             }
@@ -220,10 +221,12 @@ public class Main {
                     break;
                 case 9: // 회원 탈퇴
                     myUser.delete();
+                    disConnect();
                     System.out.println("\n** 프로그램을 종료합니다. **");
                     System.exit(0);
                     break;
                 case 10:
+                    disConnect();
                     System.out.println("\n** 프로그램을 종료합니다. **");
                     System.exit(0);
             }
@@ -255,12 +258,16 @@ public class Main {
             System.err.println("con 오류:" + e.getMessage());
             e.printStackTrace();
         }
+    }
 
-//        // 3.해제
-//        try {
-//            if(con != null)
-//                con.close();
-//        } catch (SQLException e) {}
+    public static void disConnect() {
+        // 3.해제
+        try {
+            if(con != null)
+                con.close();
+        } catch (SQLException e) {
+            System.out.println("연결 해제 실패");
+        }
     }
 
     public static boolean exist(String table, String attr, int pk) throws SQLException {
